@@ -21,8 +21,12 @@ TELTO = ""
 
 
 def check_stocks():
-    stock_req_url = f"{STOCK_ENDPOINT}?function=TIME_SERIES_DAILY_ADJUSTED&symbol={STOCK}&apikey={STOCK_APIKEY}"
-    response = requests.get(stock_req_url)
+    
+    stock_param = {"function" : "TIME_SERIES_DAILY_ADJUSTED",
+                   "symbol" : STOCK,
+                   "apikey" : STOCK_APIKEY}
+
+    response = requests.get(STOCK_ENDPOINT, params=stock_param)
     response.raise_for_status()
     response_json = response.json()
     stock_data = response_json["Time Series (Daily)"]
@@ -46,8 +50,12 @@ def check_stocks():
     
 
 def check_news():
-    news_req_url = f"{NEWS_ENDPOINT}?q={COMPANY_NAME}&from={str(before_yesterday)}&sortBy=popularity&apiKey={NEWS_APIKEY}"
-    response = requests.get(news_req_url)
+    news_param = {"q": COMPANY_NAME,
+                  "from": str(before_yesterday),
+                  "sortBy": "popularity",
+                  "apiKey": NEWS_APIKEY}
+    
+    response = requests.get(NEWS_ENDPOINT, params=news_param)
     response.raise_for_status()
     response_json = response.json()
     news_data = response_json["articles"]
